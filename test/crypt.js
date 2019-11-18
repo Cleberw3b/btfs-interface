@@ -14,35 +14,40 @@ const encrypted =
 }
 
 
-it('generates public key', (done) => {
+describe('Test cryptography module', () => {
 
-    let publicKey = crypt.getPublicKey(privKey);
-    expect(publicKey).to.be.equal(pubKey);
-    done();
+    it('generates public key', (done) => {
 
-});
+        let publicKey = crypt.getPublicKey(privKey);
+        expect(publicKey).to.be.equal(pubKey);
+        done();
+    });
 
-it('signs a message', (done) => {
+    it('signs a message', (done) => {
 
-    let sig = crypt.sign(privKey, message);
-    expect(sig).to.be.equal(signature);
-    done();
-});
+        let sig = crypt.sign(privKey, message);
+        expect(sig).to.be.equal(signature);
+        done();
+    });
 
-it('verifies a signature given a pubkey and message', (done) => {
-    expect(crypt.verify(pubKey, message, signature)).to.be.true;
-    done();
-});
+    it('verifies a signature given a pubkey and message', (done) => {
 
-it('encrypts a message', async () => {
-    let encryptedMessage = await crypt.encrypt(pubKey, message);
-    expect(encryptedMessage.iv).to.be.not.empty;
-    expect(encryptedMessage.ephemPublicKey).to.be.not.empty;
-    expect(encryptedMessage.ciphertext).to.be.not.empty;
-    expect(encryptedMessage.mac).to.be.not.empty;
-});
+        expect(crypt.verify(pubKey, message, signature)).to.be.true;
+        done();
+    });
 
-it('decrypts a encrypted message', async () => {
-    let msg = await crypt.decrypt(privKey, encrypted);
-    expect(msg).to.be.equal(message);
+    it('encrypts a message', async () => {
+
+        let encryptedMessage = await crypt.encrypt(pubKey, message);
+        expect(encryptedMessage.iv).to.be.not.empty;
+        expect(encryptedMessage.ephemPublicKey).to.be.not.empty;
+        expect(encryptedMessage.ciphertext).to.be.not.empty;
+        expect(encryptedMessage.mac).to.be.not.empty;
+    });
+
+    it('decrypts a encrypted message', async () => {
+
+        let msg = await crypt.decrypt(privKey, encrypted);
+        expect(msg).to.be.equal(message);
+    });
 });
