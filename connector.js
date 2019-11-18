@@ -1,16 +1,12 @@
 const FormData = require('form-data');
 const axios = require("axios");
-
 const fs = require('fs');
-
 
 const protocol = "http"
 const host = "198.46.160.54"
 const port = "5001"
 const apiPath = "/api/v0"
 const btfsNodeURL = protocol + "://" + host + ":" + port + apiPath
-
-// const boundary = "---------------------------9051914041544843365972754266";
 
 /**
  * Displays the BTFS node ID information.
@@ -32,18 +28,15 @@ const btfsID = () => {
  */
 const addFile = async (filename) => {
 
-    // let name = filename.substring(filename.lastIndexOf('/') + 1)
+    let name = filename.substring(filename.lastIndexOf('/') + 1)
     const formData = new FormData()
-    formData.append("file", fs.createReadStream(filename))
+    formData.append(name, fs.createReadStream(filename))
 
     return axios({
         url: btfsNodeURL + "/add",
         method: 'post',
         data: formData,
         headers: formData.getHeaders()
-        // headers: {
-        //     'Content-Type': 'multipart/form-data; boundary=' + boundary
-        // }
     })
 }
 
@@ -57,7 +50,6 @@ const addFile = async (filename) => {
  * @param {boolean} stream          Enable experimental streaming of directory entries as they are traversed.
  * @returns {Promise}
  */
-
 const listDir = (path, headers = false, resolve_type = true, size = true, stream = false) => {
     let params = {
         arg: path,
@@ -84,14 +76,11 @@ const listDir = (path, headers = false, resolve_type = true, size = true, stream
  * @param {integer} compression_level   The level of compression (1-9).
  * @returns {boolean}
  */
-
 const getFile = async (path, output, archive = false, compress = false, compression_level = 1) => {
 
     const fileName = output.substring(output.lastIndexOf('/') + 1, output.lastIndexOf('.'));
     const format = output.slice(output.lastIndexOf('.'))
     let isDataWriten = false;
-    var formData = new FormData();
-    var writeStream = fs.createWriteStream(output);
 
     let params = {
         arg: path,
@@ -107,25 +96,24 @@ const getFile = async (path, output, archive = false, compress = false, compress
         params: params
     })
 
-    // Files are stored or retrivied with some extra information that
-    // makes it hard to create the file back, but the content is there
+    // TODO removal of form-data boundaries
+    // Files are stored or retrivied with boundaries
     // QmRZ7fymHUvnDhiBsad3xcdpGeygNPVRd5avuKaLXFwkdN0000644000000000000000000000055213563103024017545 0ustar0000000000000000
     const data = response.data;
 
-    // formData.append('file', data);
-
-    fs.writeFileSync(output, data, 'UTF8', (err) => {
+    await fs.writeFileSync(output, data, 'UTF8', (err) => {
         if (err) {
             console.log(err);
         }
-        isDataWriten = true;
     });
 
-    //TODO see if writefile finished successfully
-    return true;
+    if (await fs.existsSync(output))
+        isDataWriten = true;
+
+    return isDataWriten;
 }
 
-/**
+/** TODO
  * Mounts BTFS to the filesystem (read-only).
  * 
  * @param {string} btfs_path The path where BTFS should be mounted.
