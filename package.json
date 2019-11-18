@@ -4,11 +4,11 @@
   "description": "interface connection for BitTorrent File System ",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js",
     "test": "node ./node_modules/.bin/mocha --timeout 10000",
     "start": "node index.js"
   },
-  "author": "",
+  "repository": "https://github.com/Cleberw3b/btfs-interface.git",
+  "author": "CleberW3b",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
