@@ -26,7 +26,7 @@ const btfsID = () => {
  * @param {string} filename The filename is simple the local directory that will add to BTFS.
  * @returns {Promise}
  */
-const addFile = async (filename) => {
+const addFile = (filename) => {
 
     let name = filename.substring(filename.lastIndexOf('/') + 1)
     const formData = new FormData()

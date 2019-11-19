@@ -29,7 +29,7 @@ const btfsID = () => {
  * @param {string} filename     The filename is the local path that will be added to BTFS.
  * @returns {Promise}
  */
-const addFile = async (filename) => {
+const addFile = (filename) => {
     let name = filename.substring(filename.lastIndexOf('/') + 1);
     let filestream = fs.createReadStream(filename);
     return ipfs.addFromStream({
@@ -44,7 +44,7 @@ const addFile = async (filename) => {
  * @param {string}  btfsPath    The CID of the BTFS path to list object(s).
  * @returns {Array}
  */
-const listDir = async (btfsPath, filename) => {
+const listDir = (btfsPath, filename) => {
     return util.expireOnTimeOut(() => {
         return ipfs.ls(btfsPath);
     });
@@ -57,7 +57,7 @@ const listDir = async (btfsPath, filename) => {
  * @param {string}  btfsPath    BTFS path that will be downloaded.
  * @returns {Promise}
  */
-const getFile = async (btfsPath) => {
+const getFile = (btfsPath) => {
 
     const stream = ipfs.getReadableStream(btfsPath)
     return new Promise((resolve, reject) => {
