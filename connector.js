@@ -1,11 +1,9 @@
 const FormData = require('form-data');
 const axios = require("axios");
 const fs = require('fs');
+const util = require("./util.js");
 
-const protocol = "http"
-const host = "198.46.160.54"
-const port = "5001"
-const apiPath = "/api/v0"
+const { protocol, host, port, apiPath } = util.getBtfsOptions();
 const btfsNodeURL = protocol + "://" + host + ":" + port + apiPath
 
 /**
@@ -29,6 +27,7 @@ const btfsID = () => {
 const addFile = (filename) => {
 
     let name = filename.substring(filename.lastIndexOf('/') + 1)
+    // Using form-data to replicate api example that post using curl -F @={file} {api_route}
     const formData = new FormData()
     formData.append(name, fs.createReadStream(filename))
 
@@ -96,8 +95,8 @@ const getFile = async (path, output, archive = false, compress = false, compress
         params: params
     })
 
-    // TODO removal of form-data boundaries
-    // Files are stored or retrivied with boundaries
+    // TODO remove form-data boundaries
+    // Files are stored with boundaries
     // QmRZ7fymHUvnDhiBsad3xcdpGeygNPVRd5avuKaLXFwkdN0000644000000000000000000000055213563103024017545 0ustar0000000000000000
     const data = response.data;
 

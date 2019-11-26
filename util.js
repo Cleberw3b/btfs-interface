@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const isMethodValid = method => {
     if (method === 'GET'
         || method === 'POST'
@@ -71,6 +73,16 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 };
 
+const getBtfsOptions = () => {
+    return {
+        protocol: process.env.BTFS_PROTOCOL,
+        host: process.env.BTFS_HOST,
+        port: process.env.BTFS_PORT,
+        apiPath: process.env.BTFS_API_PATH
+    }
+}
+
 module.exports.isMethodValid = isMethodValid;
 module.exports.printAxiosResponse = printAxiosResponse;
 module.exports.expireOnTimeOut = expireOnTimeOut;
+module.exports.getBtfsOptions = getBtfsOptions;

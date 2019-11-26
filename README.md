@@ -1,6 +1,6 @@
 ### BTFS interface
 
-To configure yout BTFS node see [here](https://github.com/TRON-US/go-btfs)
+To configure your BTFS node see [here](https://github.com/TRON-US/go-btfs)
 
 There is also a configBTFS.sh script that show how execute BTFS configuration
 

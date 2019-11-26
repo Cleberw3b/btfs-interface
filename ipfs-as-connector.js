@@ -2,10 +2,7 @@ const ipfsClient = require('ipfs-http-client')
 const fs = require('fs');
 const util = require("./util.js");
 
-const protocol = "http"
-const host = "198.46.160.54"
-const port = "5001"
-const apiPath = "/api/v0/"
+const { protocol, host, port, apiPath } = util.getBtfsOptions();
 
 const ipfs = ipfsClient({
     host,
